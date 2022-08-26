@@ -4,68 +4,80 @@ import csv
 from urllib.request import urlopen
 # in terminal "pip install beautifulsoup4"
 from bs4 import BeautifulSoup
+import pandas as pd
 
 with open("Bradesco_8252022_112950 AM.html") as fp:
     soup = BeautifulSoup(fp, "html.parser")
+
+    phrase = soup.body.text
+    phrase_to_list = phrase.splitlines()
+    phrase_to_list = list(filter(None, phrase_to_list))
+    del phrase_to_list[0:7]
+
+    valueToBeRemoved = ['\t\t\t\t\t\t\t\xa0', '\t\t\t\t\t\t', '\xa0', "Total da fatura (final 5033):', 'R$Â\xa01.591,15", '*Valores sujeitos a alteraÃ§Ã£o o fechamento da fatura', '                    Demais telefones consulte o site Se Preferir, fale com a BIA pelo  (11) 3335 0237', '                ', '                    Atendimento de segunda a sexta-feira das 9h\tàs 18h, exceto feriados', '                ', '                    Ouvidoria 0800 727 9933', "                    Cancelamento, reclamação, informação, sugestão e elogio: Atendimento disponível 24h', '                ", 'Total da fatura (final 5033):', 'R$Â\xa01.591,15', '                    Fone Fácil Bradesco', '                    Capitais e Regiões metropolitanas 4002 0022 Demais Regiões 0800 570 0022', '                    Atendimento eletrônico disponível 24h', '                    Atendimento personalizado de segunda a sexta-feira, das 7h às 22h', '                    Cancelamento, reclamação, informação, sugestão e elogio: Atendimento disponível 24h', '                    SAC - deficiência Auditiva ou de Fala 0800 722 0099', '                    e, aos sábados das 9h às 15h. Domingos e feriados nacionais - não há expediente.' '                    SAC - AlÔ Bradesco 0800 704 8383 ', '                    e, aos sábados das 9h às 15h. Domingos e feriados nacionais - não há expediente.','                    SAC - AlÔ Bradesco 0800 704 8383 ' ]
+
+    phrase_to_list = [value for value in phrase_to_list if value not in valueToBeRemoved]
+
+
+    # phrase_to_list.remove('Fatura')
+    print(phrase_to_list)
+
+
+
+
     # print(soup.body.text)
-    # test = list(soup.children)
-    #for item in list(soup.children):
-    #   print(item)
 
-    # print(soup.body.div.page.div.div.table.tbody.tr.trMarginTop.td.div.table.tbody.tr.td.span)
-    # tr_elements = soup.find_all('table')[2].find_all('tr')
-    # print(tr_elements)
+    bodyList = list()
+    for item in range(1000):
+        try:
+            bodyList.append(soup.find_all('span', attrs={'style': 'font-size: small;'})[item].get_text())
+        except:
+            continue
 
-    # test = list(soup.find_all('table')[2].find_all('tr'))
-    # for item in test:
-    #    print(item)
+    col1List = list()
 
-    # print(soup.body.get_text())
-    for item in range(10000):
-        # name purchase
-        # print(soup.find_all('table')[item].find_all('span')[0].get_text())
+    for item in range(100):
+        try:
+            col1List.append(soup.find_all('span', attrs={'style': 'font-size: small;'})[item].get_text())
+        except:
+            continue
 
-        # name purchase
-        #print(soup.find_all('div')[item].find_all('span')[0].get_text())
+    for item in range(100):
+        try:
+            print(col1List[item])
+        except:
+            continue
 
+    df = pd.DataFrame()
+    df['Col1'] = col1List
+    df['Col1']
 
-        # date
-        dateBuy = soup.find_all('span', attrs={'style':'font-size: small;'})[item].get_text()
-        print(dateBuy)
+    # month
+    col1List = list()
 
-        # month
-        month = soup.find_all('span', attrs={'style':'font-size: x-small'})[item].get_text()
-        print(month)
+    for item in range(100):
+        try:
+            col1List.append(soup.find_all('span', attrs={'style': 'font-size: small;'})[item].get_text())
+        except:
+            continue
 
-        # variable datemonth
-        dateMonth = dateBuy + month
+    for item in range(100):
+        try:
+            print(col1List[item])
+        except:
+            continue
 
-        # name purchase and purchase
-        # purchase = soup.find_all('span', attrs={'style': 'width:100%;font-size: x-small;color: black;width:100%'})[item].get_text()
-        blank = ["' '", "''", "", " ", ' ', '']
-        namePurchaseBefore = ""
-        namePurchase = ""
-        valuePurchaseBefore = ""
-        valuePurchase = ""
-        test = ' '
-        test2 = ''
-        for x in range(item, 10000):
-            purchase = soup.find_all('span', attrs={'style': 'width:100%;font-size: x-small;color: black;width:100%'})[x].get_text()
-            # print(purchase)
-            # if purchase != test and purchase not in blank and purchase != namePurchaseBefore:
-            if purchase != test and namePurchaseBefore == "":
-                namePurchase = purchase
-                namePurchaseBefore = namePurchase
-            else:
-                test2 = ''
-            if purchase != test and namePurchase != purchase and purchase != valuePurchaseBefore and valuePurchaseBefore == "":
-                valuePurchase = purchase
-                valuePurchaseBefore = valuePurchase
-            else:
-                test2 = ''
-            if namePurchase != test and valuePurchase != test and namePurchase != valuePurchase and namePurchase not in blank and valuePurchase not in blank:
-                break
-        print(namePurchase)
-        print(valuePurchase)
-        print("\n")
+    df = pd.DataFrame()
+    df['Col1'] = col1List
+    df['Col1']
 
+    # date
+    dateBuy = soup.find_all('span', attrs={'style': 'font-size: small;'})[0].get_text()
+    print(dateBuy)
+
+    # month
+    month = soup.find_all('span', attrs={'style': 'font-size: x-small'})[0].get_text()
+    print(month)
+
+    # purchase
+    soup.find_all('span', attrs={'style': 'width:100%;font-size: x-small;color: black;width:100%'})[0].get_text()
