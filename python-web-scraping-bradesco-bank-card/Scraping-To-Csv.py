@@ -18,15 +18,43 @@ with open("Bradesco_8252022_112950 AM.html") as fp:
     valueToBeRemoved = ['\t\t\t\t\t\t\t\xa0', '\t\t\t\t\t\t', '\xa0', "Total da fatura (final 5033):', 'R$Â\xa01.591,15", '*Valores sujeitos a alteraÃ§Ã£o o fechamento da fatura', '                    Demais telefones consulte o site Se Preferir, fale com a BIA pelo  (11) 3335 0237', '                ', '                    Atendimento de segunda a sexta-feira das 9h\tàs 18h, exceto feriados', '                ', '                    Ouvidoria 0800 727 9933', "                    Cancelamento, reclamação, informação, sugestão e elogio: Atendimento disponível 24h', '                ", 'Total da fatura (final 5033):', 'R$Â\xa01.591,15', '                    Fone Fácil Bradesco', '                    Capitais e Regiões metropolitanas 4002 0022 Demais Regiões 0800 570 0022', '                    Atendimento eletrônico disponível 24h', '                    Atendimento personalizado de segunda a sexta-feira, das 7h às 22h', '                    Cancelamento, reclamação, informação, sugestão e elogio: Atendimento disponível 24h', '                    SAC - deficiência Auditiva ou de Fala 0800 722 0099', '                    e, aos sábados das 9h às 15h. Domingos e feriados nacionais - não há expediente.' '                    SAC - AlÔ Bradesco 0800 704 8383 ', '                    e, aos sábados das 9h às 15h. Domingos e feriados nacionais - não há expediente.','                    SAC - AlÔ Bradesco 0800 704 8383 ' ]
     phrase_to_list = [value for value in phrase_to_list if value not in valueToBeRemoved]
 
+    positionList = 0
+    index = 1
+    day = 0
+    for item in phrase_to_list:
+        if index == 1:
+            dayBefore = day
+            day = item
+
+        if index == 2 and item == 'AGO':
+            dayMain = day
+        else:
+            dayMain = dayBefore
+
+        if index == 2 and item != 'AGO':
+            phrase_to_list.insert(positionList-1, 'AGO')
+            phrase_to_list.insert(positionList-1, dayMain)
+
+        if index == 4:
+            index = 0
+
+        index += 1
+        positionList += 1
+
     listForCard = list()
     listTemporaly = list()
     index = 0
     for item in phrase_to_list:
         listTemporaly.append(item)
-        if index == 3:
-            listForCard.extend(listTemporaly)
+        copiedListTemporaly = listTemporaly[:]
 
-        index += 1
+        if index == 3:
+            listForCard.append(copiedListTemporaly)
+            index = 0
+            listTemporaly.clear()
+        else:
+            index += 1
+
     print(listForCard)
 
     header = ['day', 'month', 'name preasure', 'valeu preasure']
@@ -38,7 +66,7 @@ with open("Bradesco_8252022_112950 AM.html") as fp:
         writer.writerow(header)
 
         # write multiple rows
-        writer.writerows(phrase_to_list)
+        writer.writerows(listForCard)
 
 
 
