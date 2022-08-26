@@ -32,12 +32,10 @@ with open("Bradesco_8252022_112950 AM.html") as fp:
         else:
             dayMain = dayBefore
 
-        if index == 2 and item != 'AGO' and changes > 2:
+        if index == 2 and item != 'AGO' and changes == 3:
             phrase_to_list.insert(positionList+1, 'AGO')
             phrase_to_list.insert(positionList+1, dayBefore)
             changes = 1
-
-        
 
         if index == 2 and item != 'AGO' and changes <= 2:
             phrase_to_list.insert(positionList-1, 'AGO')
