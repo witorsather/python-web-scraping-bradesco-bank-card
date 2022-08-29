@@ -41,6 +41,8 @@ with open("Bradesco_8252022_112950 AM.html") as fp:
             phrase_to_list.insert(positionList-1, 'AGO')
             phrase_to_list.insert(positionList-1, dayMain)
             changes += 1
+            day = dayMain
+            dayBefore = dayMain
 
         if index == 4:
             index = 0
@@ -74,7 +76,3 @@ with open("Bradesco_8252022_112950 AM.html") as fp:
 
         # write multiple rows
         writer.writerows(listForCard)
-
-
-
-
