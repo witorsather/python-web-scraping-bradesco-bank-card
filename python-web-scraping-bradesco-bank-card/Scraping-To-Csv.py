@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import csv
 
-with open("Bradesco_8252022_112950 AM.html") as fp:
+with open("Bradesco_8292022_41209 PM.html") as fp:
     soup = BeautifulSoup(fp, "html.parser")
 
     phrase = soup.body.text
@@ -23,6 +23,9 @@ with open("Bradesco_8252022_112950 AM.html") as fp:
     day = 0
     changes = 0
     for item in phrase_to_list:
+        itemActive = item
+        itemBefore = itemActive
+
         if index == 1:
             dayBefore = day
             day = item
@@ -46,6 +49,18 @@ with open("Bradesco_8252022_112950 AM.html") as fp:
 
         if index == 4:
             index = 0
+            changes = 0
+
+        # test
+        if item == "17":
+            test33 = 0
+
+        if index == 4 and item == 'AGO':
+            dayBefore = itemBefore
+            day = itemBefore
+            # phrase_to_list.remove(positionList - 2)
+            del phrase_to_list[positionList - 1]
+            index = 2
 
         index += 1
         positionList += 1
@@ -66,7 +81,7 @@ with open("Bradesco_8252022_112950 AM.html") as fp:
 
     print(listForCard)
 
-    header = ['day', 'month', 'name preasure', 'valeu preasure']
+    header = ['DAY', 'MONTH', 'NAME_PREASURE', 'VALUE_PREASURE']
 
     with open('card.csv', 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
