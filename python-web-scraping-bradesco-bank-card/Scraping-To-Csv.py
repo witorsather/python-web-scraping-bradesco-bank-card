@@ -7,7 +7,10 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import csv
 
-with open("Bradesco_8292022_41209 PM.html") as fp:
+# ***********************************************
+# ***********************************************
+# start open html and send csv
+with open("Bradesco_Credit_Card_Bill.html") as fp:
     soup = BeautifulSoup(fp, "html.parser")
 
     phrase = soup.body.text
@@ -91,3 +94,8 @@ with open("Bradesco_8292022_41209 PM.html") as fp:
 
         # write multiple rows
         writer.writerows(listForCard)
+# end open html and send csv
+# ***********************************************
+# ***********************************************
+
+# csv to google sheets
